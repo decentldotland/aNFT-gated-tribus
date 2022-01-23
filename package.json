@@ -1,0 +1,35 @@
+{
+  "name": "anft-gated-tribus",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "anft-gated social feeds",
+  "main": "./src/api.js",
+  "exports": {
+    "./transaction": "./utils/arweave/transaction.js"
+  },
+  "scripts": {
+    "start": "node ./src/api.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decentldotland/anft-gated-tribus.git"
+  },
+  "bugs": {
+    "url": "https://github.com/decentldotland/anft-gated-tribus/issues"
+  },
+  "homepage": "https://github.com/decentldotland/anft-gated-tribus#readme",
+  "keywords": [
+    "web3",
+    "arweave",
+    "decent-land",
+    "NFT"
+  ],
+  "author": "charmful0x",
+  "license": "MIT",
+  "dependencies": {
+    "arweave": "^1.10.23",
+    "axios": "^0.25.0",
+    "redstone-smartweave": "^0.4.4",
+    "smartweave": "^0.4.46"
+  }
+}
