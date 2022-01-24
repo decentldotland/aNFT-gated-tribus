@@ -5,7 +5,7 @@ The protocol by default make the action of listing a created tribus in the **REG
 ```js
 import { getUnlistedTribus } from "anft-gated-tribus"
 
-async function createdFeeds() {
+async function fetchUnlistedTribus() {
 	const unlisted_tribuses_array = await getUnlistedTribus();
 
 	return unlisted_tribuses_array;
