@@ -15,6 +15,7 @@ export async function handle(state, action) {
     "Tribus has not been activated yet by the NFT owners";
   const ERROR_INVALID_POST_CONTENT_TYPE = "the post has an invalid MIME type";
   const ERROR_INVALID_TAG = "invalid TX tag has been seeded";
+  const ERROR_NOT_TOP_HOLDER = "only the top holder can execute this function";
 
   if (input.function === "post") {
     // validate NFT's fractionized ownership by the caller
@@ -31,6 +32,7 @@ export async function handle(state, action) {
     _checkTagValidity(tags, "Protocol-Name", "DecentLand");
     _checkTagValidity(tags, "Protocol-Tribus-Type", "aNFT-Gated");
     _checkTagValidity(tags, "Protocol-Action", "post");
+    _checkTagValidity(tags, "Tribus-ID", SmartWeave.contract.id);
 
     const txid = SmartWeave.transaction.id;
 
@@ -64,7 +66,7 @@ export async function handle(state, action) {
     _checkTagValidity(tags, "Protocol-Tribus-Type", "aNFT-Gated");
     _checkTagValidity(tags, "Protocol-Action", "reply");
     _checkTagValidity(tags, "reply-reference", post_id);
-    _checkTagValidity(tags, "Tribus-ID", state.nft_id);
+    _checkTagValidity(tags, "Tribus-ID", SmartWeave.contract.id);
 
     const replyObject = {
       sender: caller,
@@ -77,6 +79,44 @@ export async function handle(state, action) {
 
     return { state };
   }
+  
+  if (input.function === "update_tribus") {
+  const name = input?.name;
+  const description = input?.description;
+
+  await _isTribusMember(caller, nft_id);
+
+  const nft_balances_object = (
+    await SmartWeave.contracts.readContractState(nft_id)
+  ).balances;
+  const nft_balances_array = [];
+
+  for (let address in nft_balances_object) {
+    const balance = nft_balances_object[address];
+    nft_balances_array.push({ address: address, balance: balance });
+  }
+
+  const sorted_balances = nft_balances_array.sort(
+    (a, b) => b.balance - a.balance
+  );
+  const caller_index_in_sorted = sorted_balances.findIndex(
+    (user) => user.address === caller
+  );
+
+  if (caller_index_in_sorted !== 0) {
+    throw new ContractError(ERROR_NOT_TOP_HOLDER);
+  }
+
+  if (name) {
+    state.name = name;
+  }
+
+  if (description) {
+    state.description = description;
+  }
+
+  return { state };
+}
 
   function _validateStringTypeLen(str, minLen, maxLen) {
     if (typeof str !== "string") {
