@@ -1,0 +1,23 @@
+{
+  "thumbnail": "ICxI0rStF7Gwmrtp30LLE23-dU9zTh883YxEozWwC3Q",
+  "mime_types": [
+    "text/plain",
+    "text/html",
+    "application/json",
+    "image/png",
+    "image/apng",
+    "image/avif",
+    "image/gif",
+    "image/jpeg",
+    "image/svg+xml",
+    "image/webp",
+    "audio/mpeg",
+    "audio/webm",
+    "audio/ogg",
+    "audio/aac",
+    "application/ogg",
+    "video/webm",
+    "video/ogg",
+    "video/mp4"
+  ]
+}
