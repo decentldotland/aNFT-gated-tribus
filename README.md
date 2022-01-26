@@ -35,6 +35,9 @@ This [contract](./protocol-contracts/registry) is used as registration and valid
 ### Tribus Contract
 All of the deployed tribuses are instances of the main [Tribus contract](./protocol-contracts/tribus). Therefore, all the separated social feeds have the same computational logic and limitations.
 
+### Contracts API
+This [contract](./protocol-contracts/contracts-api) is used as an onchain-permanent API, or a proxy for the deployed tribuses to read data like accpeted MIME types and setting thumbnails for tribuses.
+
 ## Usage
 
 ### Load The Created Tribuses IDs
