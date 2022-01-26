@@ -5,6 +5,8 @@ export async function handle(state, action) {
   const name = state.name;
   const description = state.description;
   const nft_id = state.nft_id;
+  
+  const API_ID = "z1J-k77bSz4IrnreKKLc1ZwBCVTcn7AUc5YQNAm61QU";
 
   const ERROR_INVALID_STRING_LENGTH =
     "the input or not a valid string or a string with length unacceptable";
@@ -16,6 +18,8 @@ export async function handle(state, action) {
   const ERROR_INVALID_POST_CONTENT_TYPE = "the post has an invalid MIME type";
   const ERROR_INVALID_TAG = "invalid TX tag has been seeded";
   const ERROR_NOT_TOP_HOLDER = "only the top holder can execute this function";
+  const ERROR_CONTENT_TYPE_MISSING = "the nft_id miss the Content-Type tag";
+  const ERROR_MIME_TYPE = "the NFT content-type is not supported";
 
   if (input.function === "post") {
     // validate NFT's fractionized ownership by the caller
@@ -83,6 +87,7 @@ export async function handle(state, action) {
   if (input.function === "update_tribus") {
   const name = input?.name;
   const description = input?.description;
+  const thumbnail = input?.thumbnail;
 
   await _isTribusMember(caller, nft_id);
 
@@ -113,6 +118,10 @@ export async function handle(state, action) {
 
   if (description) {
     state.description = description;
+  }
+    
+  if (thumbnail) {
+    await _setThumbnail(nft_id);
   }
 
   return { state };
@@ -163,4 +172,42 @@ export async function handle(state, action) {
 
     return index;
   }
+  
+  async function _setThumbnail(nft_id) {
+  const tagsMap = new Map();
+
+  const tx_object = await SmartWeave.unsafeClient.transactions.get(nft_id);
+  const tags = tx_object.get("tags");
+
+  for (let tag of tags) {
+    const name = tag.get("name", { decode: true, string: true });
+    const value = tag.get("value", { decode: true, string: true });
+
+    tagsMap.set(name, value);
+  }
+
+  if (!tagsMap.has("Content-Type")) {
+    throw new ContractError(ERROR_CONTENT_TYPE_MISSING);
+  }
+
+  const nft_content_type = tagsMap.get("Content-Type");
+  const api_state = await SmartWeave.contracts.readContractState(API_ID);
+  const api_thumbnail = api_state.thumbnail;
+  const api_supported_mimes = api_state.mime_types;
+
+  if (!api_supported_mimes.includes(nft_content_type)) {
+    throw new ContractError(ERROR_MIME_TYPE);
+  }
+
+  if (nft_content_type.startsWith("image/")) {
+    state.thumbnail = nft_id;
+
+    return { state };
+  }
+
+  state.thumbnail = api_thumbnail;
+
+  return { state };
+}
+
 }
