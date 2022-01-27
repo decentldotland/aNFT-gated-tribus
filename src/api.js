@@ -1,4 +1,4 @@
-import { arweave, readRegistryContract } from "./utils/arweave/arweave.js";
+import { arweave, readRegistryContract, readApiContract } from "./utils/arweave/arweave.js";
 import { tribusInteractions, gqlTemplate } from "./utils/gql.js";
 import {
   tribusDeploying,
@@ -9,6 +9,7 @@ import {
   createReply,
 } from "./utils/arweave/transactions.js";
 
+// REGISTRY_CONTRACT WRAPPERS
 export async function getTribuses() {
   try {
     const tribuses = (await readRegistryContract()).created_tribuses;
@@ -32,6 +33,28 @@ export async function getGatedNfts() {
   }
 }
 
+// CONTRACTS_API WRAPPERS
+export async function getCurrentThumbnail() {
+  try {
+    const thumbnail = (await readApiContract()).thumbnail;
+
+    return thumbnail;
+  } catch (error) {
+    console.log(`${error.name} : ${error.description}`);
+  }
+}
+
+export async function getSupportedMime() {
+  try {
+    const mimes = (await readApiContract()).mime_types;
+
+    return mimes;
+  } catch (error) {
+    console.log(`${error.name} : ${error.description}`);
+  }
+}
+
+// UTILS FUNCTIONS
 export async function getUnlistedTribus() {
   try {
     const listedTribus = [];
