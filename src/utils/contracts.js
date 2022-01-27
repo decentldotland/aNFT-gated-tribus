@@ -1,4 +1,4 @@
-export const REGISTRY_CONTRACT = "mHqkTWPghOxHvlGHZDqtB0wlu3SsdTmYMZA1x2hUCno";
+export const REGISTRY_CONTRACT = "UELDHaCojGk31LdLaU4-HYp0BOAd-xK-Zyrx-YY0Qu8";
 // Previous versions
 // hSKeBf0YhmuDVXpNgMjM664yGMTqX8vqCCU3W2cao3M
 // 83mIdTzof8FeTqgeHgiopzgeOY-5tSJicZGAUEEF07Q
