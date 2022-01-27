@@ -31,3 +31,13 @@ export async function readRegistryContract() {
     process.exit(1);
   }
 }
+
+export async function readApiContract() {
+  try {
+    const state = await readContract(arweave, CONTRACTS_API);
+    return state
+  } catch(error) {
+    console.log(`${error.name} : ${error.description}`);
+    process.exit(1);
+  }
+}
