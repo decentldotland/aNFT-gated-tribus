@@ -1,6 +1,6 @@
 {
   "name": "anft-gated-tribus",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "type": "module",
   "description": "anft-gated social feeds",
   "main": "./src/api.js",
