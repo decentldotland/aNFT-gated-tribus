@@ -1,6 +1,6 @@
 import { SmartWeaveNodeFactory, LoggerFactory } from "redstone-smartweave";
 import { readContract } from "smartweave";
-import { REGISTRY_CONTRACT } from "../contracts.js";
+import { REGISTRY_CONTRACT, CONTRACTS_API } from "../contracts.js";
 import Arweave from "arweave";
 
 export const arweave = Arweave.init({
